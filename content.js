@@ -12,12 +12,23 @@ function initMinimap() {
     previewCard.id = 'gemini-minimap-preview';
     document.body.appendChild(previewCard);
 
+
+    let lastMessageCount = 0;
+    let isInternalScrolling = false;
     // 核心更新逻辑
     const updateMinimap = () => {
-        minimap.innerHTML = ''; 
-
-        // 查找对话块 (选择器策略保持不变，如果不准需要调整这里)
         const messageBlocks = document.querySelectorAll('user-query, model-response');
+        
+        // 获取容器用于检查
+        const minimapContainer = document.getElementById('gemini-minimap-container');
+        
+        // 核心逻辑：如果对话数量没变，且 Minimap 已经有内容了，就不要重画
+        if (messageBlocks.length === lastMessageCount && minimapContainer && minimapContainer.children.length > 0) {
+            return;
+        }
+        lastMessageCount = messageBlocks.length;
+
+        minimap.innerHTML = '';
 
         messageBlocks.forEach((block) => {
             const isUser = block.tagName.toLowerCase() === 'user-query';
@@ -40,6 +51,8 @@ function initMinimap() {
 
             // 1. 点击跳转 (修正版：兼容内部滚动容器)
             mapItem.addEventListener('click', () => {
+                isInternalScrolling = true;
+                previewCard.style.display = 'none';
                 // 找到最近的可以滚动的祖先元素
                 const getScrollParent = (node) => {
                     if (node == null) return null;
@@ -73,6 +86,7 @@ function initMinimap() {
                         behavior: 'smooth'
                     });
                 }
+                setTimeout(() => { isInternalScrolling = false; }, 1000);
             });
 
             // 2. 鼠标移入：显示预览
@@ -119,6 +133,18 @@ function initMinimap() {
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('scroll', () => {
+        if (!isInternalScrolling) {
+            const preview = document.getElementById('gemini-minimap-preview');
+            if (preview) {
+                preview.style.opacity = '0';
+                // 停留一瞬后彻底隐藏，防止挡住点击
+                setTimeout(() => {
+                    if (preview.style.opacity === '0') preview.style.display = 'none';
+                }, 300);
+            }
+        }
+    }, { passive: true });
 }
 
 window.addEventListener('load', initMinimap);

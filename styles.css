@@ -64,6 +64,7 @@
     display: none; /* 默认隐藏 */
     border-left: 4px solid transparent; /*以此区分提问和回答*/
     font-family: sans-serif;
+    transition: opacity 0.2s ease;
 }
 
 /* 预览卡片里的标题 */
@@ -73,4 +74,17 @@
     font-size: 11px;
     color: #666;
     text-transform: uppercase;
+}
+
+/* 当前视口指示器 - 模拟内容在屏幕中的位置 */
+#minimap-viewport-indicator {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: rgba(66, 133, 244, 0.2); /* 浅蓝色透明背景 */
+    border-top: 1px solid rgba(66, 133, 244, 0.4);
+    border-bottom: 1px solid rgba(66, 133, 244, 0.4);
+    pointer-events: none; /* 确保不影响点击色块 */
+    z-index: 10000;
+    transition: top 0.1s linear, height 0.1s linear; /* 平滑移动 */
 }
