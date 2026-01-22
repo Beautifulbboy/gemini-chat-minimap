@@ -1,0 +1,76 @@
+/* --- 保持原有的 Minimap 容器样式 --- */
+#gemini-minimap-container {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    width: 60px;
+    height: 80vh;
+    background: rgba(255, 255, 255, 0.1); /* 稍微调亮一点背景 */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 9998; /* 比预览框低一层 */
+    padding: 5px;
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    /* 隐藏滚动条但保留功能 */
+    scrollbar-width: none; 
+}
+
+/* --- Minimap 色块样式 --- */
+.minimap-item {
+    width: 100%;
+    min-height: 4px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.6;
+}
+
+.minimap-item:hover {
+    opacity: 1;
+    transform: scaleX(1.1);
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.minimap-user {
+    background-color: #4285f4;
+    margin-left: auto;
+    width: 80%;
+}
+
+.minimap-model {
+    background-color: #34a853;
+    margin-right: auto;
+    width: 80%;
+}
+
+/* --- 新增：预览浮窗样式 --- */
+#gemini-minimap-preview {
+    position: fixed;
+    right: 80px; /* 固定在 Minimap 左侧 */
+    width: 300px; /* 卡片宽度 */
+    background: white;
+    color: #333;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    font-size: 13px;
+    line-height: 1.5;
+    pointer-events: none; /* 让鼠标穿透，防止闪烁 */
+    display: none; /* 默认隐藏 */
+    border-left: 4px solid transparent; /*以此区分提问和回答*/
+    font-family: sans-serif;
+}
+
+/* 预览卡片里的标题 */
+#gemini-minimap-preview strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+}

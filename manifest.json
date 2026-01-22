@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Chat Minimap",
+  "version": "1.0",
+  "description": "为 Gemini 长对话添加类似 VSCode 的 Minimap 导航条",
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}
