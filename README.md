@@ -1,5 +1,10 @@
 <h3 align="center">Gemini Chat Minimap</h3>
 
+<p align="center">
+  <a href="https://github.com/Beautifulbboy/gemini-chat-minimap.git">
+    <img src="./icons/icon-origin.png" alt="Logo" width="18%">
+  </a>
+
 <div align="center">English | <a href="README.zh-CN.md" >简体中文</a></div>
 
 ---
