@@ -5,6 +5,14 @@ function initMinimap() {
     // 2. 创建 Minimap 主容器
     const minimap = document.createElement('div');
     minimap.id = 'gemini-minimap-container';
+
+    // --- 新增：读取用户的 固定/隐藏 偏好 ---
+    // 默认值为 true (固定)，如果用户之前设为 false，则添加隐藏类名
+    let isPinned = localStorage.getItem('gemini-minimap-pinned') !== 'false';
+    if (!isPinned) {
+        minimap.classList.add('minimap-auto-hide');
+    }
+
     document.body.appendChild(minimap);
 
     // 3. 创建预览浮窗 (Preview Card)
@@ -29,6 +37,31 @@ function initMinimap() {
         lastMessageCount = messageBlocks.length;
 
         minimap.innerHTML = '';
+
+        // ================= 新增开始 =================
+        // 创建图钉切换按钮
+        const toggleBtn = document.createElement('div');
+        toggleBtn.id = 'minimap-toggle-btn';
+        toggleBtn.title = isPinned ? "取消固定 (自动隐藏至侧边)" : "固定导航条";
+        // 注入一个精美的图钉 SVG 图标
+        toggleBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/></svg>`;
+        
+        // 绑定点击切换事件
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 防止误触其他事件
+            isPinned = !isPinned;
+            localStorage.setItem('gemini-minimap-pinned', isPinned); // 保存到本地
+            
+            if (isPinned) {
+                minimap.classList.remove('minimap-auto-hide');
+                toggleBtn.title = "取消固定 (自动隐藏至侧边)";
+            } else {
+                minimap.classList.add('minimap-auto-hide');
+                toggleBtn.title = "固定导航条";
+            }
+        });
+        minimap.appendChild(toggleBtn);
+        // ================= 新增结束 =================
 
         // --- 新增：创建指示器元素 ---
         const indicator = document.createElement('div');
